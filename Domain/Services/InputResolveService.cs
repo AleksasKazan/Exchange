@@ -39,7 +39,7 @@ namespace Domain.Services
                     !Enum.TryParse(currencyPairArray[0], out ISOCurrency mainCurrency) ||
                     !Enum.TryParse(currencyPairArray[1], out ISOCurrency moneyCurrency))
                 {
-                    throw new ArgumentException("Invalid Currency input format, try e.g. 'EUR/DKK'");
+                    throw new ArgumentException($"Invalid Currency input format '{currencyPairArray}', try e.g. 'EUR/DKK'");
                 }
 
                 exchangeModel.MainCurrency = mainCurrency;
