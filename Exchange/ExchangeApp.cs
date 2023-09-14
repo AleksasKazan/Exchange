@@ -35,7 +35,7 @@ namespace Exchange
                     case ConsoleKey.NumPad1:
                         Console.Clear();
                         Console.WriteLine("Usage: Enter the 'Exchange <currency pair> <amount to exchange>' to exchange (e.g., Exchange EUR/DKK 1)");
-                        string input = Console.ReadLine();
+                        var input = Console.ReadLine();
 
                         if (string.IsNullOrWhiteSpace(input))
                         {
