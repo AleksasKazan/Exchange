@@ -51,6 +51,10 @@ namespace Exchange
 
                             Console.WriteLine($"Exchanged amount: {exchangedAmount}");
                         }
+                        catch (ArgumentException ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
                         catch (Exception ex)
                         {
                             _logger.LogError(ex, "An error occurred during currency conversion.");

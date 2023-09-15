@@ -20,13 +20,22 @@ namespace Domain.Services
                 return exchangeModel.Amount;
             }
 
-            var mainCurrencyToDKK = exchangeModel.MainCurrency == ISOCurrency.DKK ? 100 : currencyRates
-                .FirstOrDefault(x => x.ISO == exchangeModel.MainCurrency.ToString()).Amount;
+            var mainCurrencyToDKK = currencyRates.FirstOrDefault(x => x.ISO == exchangeModel.MainCurrency.ToString());
+            var moneyCurrencyToDKK = currencyRates.FirstOrDefault(x => x.ISO == exchangeModel.MoneyCurrency.ToString());
 
-            var moneyCurrencyToDKK = exchangeModel.MoneyCurrency == ISOCurrency.DKK ? 100 : currencyRates
-                .FirstOrDefault(x => x.ISO == exchangeModel.MoneyCurrency.ToString()).Amount;
+            if (mainCurrencyToDKK is null && exchangeModel.MainCurrency != ISOCurrency.DKK || 
+                moneyCurrencyToDKK is null && exchangeModel.MoneyCurrency != ISOCurrency.DKK)
+            {
+                var missingISOCurrency = mainCurrencyToDKK is null && 
+                    exchangeModel.MainCurrency != ISOCurrency.DKK ? 
+                    exchangeModel.MainCurrency.ToString() : exchangeModel.MoneyCurrency.ToString();
+                throw new ArgumentException($"The ISO currency {missingISOCurrency} is valid, but we don't currently have an exchange rate for it.");
+            }
 
-            return Math.Round(mainCurrencyToDKK / moneyCurrencyToDKK * exchangeModel.Amount, 4);
+            var mainCurrencyToDKKAmount = exchangeModel.MainCurrency == ISOCurrency.DKK ? 100 : mainCurrencyToDKK!.Amount;
+            var moneyCurrencyToDKKAmount = exchangeModel.MoneyCurrency == ISOCurrency.DKK ? 100 : moneyCurrencyToDKK!.Amount;
+
+            return Math.Round(mainCurrencyToDKKAmount / moneyCurrencyToDKKAmount * exchangeModel.Amount, 4);
         }
     }
 }
