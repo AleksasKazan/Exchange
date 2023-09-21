@@ -35,11 +35,23 @@ namespace Domain.Services
 
                 if (currencyPairArray.Length != 2 ||
                     currencyPairArray[0].Length != 3 ||
-                    currencyPairArray[1].Length != 3 ||
-                    !Enum.TryParse(currencyPairArray[0], out ISOCurrency mainCurrency) ||
-                    !Enum.TryParse(currencyPairArray[1], out ISOCurrency moneyCurrency))
+                    currencyPairArray[1].Length != 3)
                 {
-                    throw new ArgumentException($"Invalid Currency input format '{currencyPairArray}', try e.g. 'EUR/DKK'");
+                    throw new ArgumentException($"Invalid Currency input format '{currencyPair}', try e.g. 'EUR/DKK'");
+                }
+
+                var isValidMainCurrency = Enum.TryParse(currencyPairArray[0], out ISOCurrency mainCurrency);
+                var isValidMoneyCurrency = Enum.TryParse(currencyPairArray[1], out ISOCurrency moneyCurrency);
+
+                if (!isValidMainCurrency && !isValidMoneyCurrency)
+                {
+                    throw new ArgumentException($"The currency pair contains unknown currencies: '{currencyPairArray[0]}' and '{currencyPairArray[1]}'");
+                }
+
+                if (!isValidMainCurrency || !isValidMoneyCurrency)
+                {
+                    var unknownCurrency = isValidMainCurrency ? currencyPairArray[1] : currencyPairArray[0];
+                    throw new ArgumentException($"The currency pair contains an unknown currency: '{unknownCurrency}'");
                 }
 
                 exchangeModel.MainCurrency = mainCurrency;
