@@ -19,6 +19,7 @@ Install it globally using the following command:
  
   ![image](https://github.com/AleksasKazan/Exchange/assets/82649971/043fbe02-71a9-4cfe-885a-1521684f6945)
 - Optionally, if you want to customize exchange rates, modify download `rates.json` file as needed.
+- The exchange rates in the `rates.json` file, denots the amount Danish kroner (DKK) required to purchase 100 in the mentioned currency.
 
 ### 3. Place Configuration Files:
 
