@@ -95,5 +95,20 @@ namespace Exchange.Tests.Services
             // Assert
             Assert.AreEqual(Math.Round(743.94m / 663.11m * 100m, 4), result);
         }
+
+        [TestMethod]
+        public void ConvertCurrency_WithMoneyCurrencyEqualToMissingGBP_ThrowsArgumentException()
+        {
+            // Arrange
+            var exchangeModel = new ExchangeModel
+            {
+                MainCurrency = ISOCurrency.DKK,
+                MoneyCurrency = ISOCurrency.GBP,
+                Amount = 100m
+            };
+
+            // Act & Assert
+            Assert.ThrowsException<ArgumentException>(() => _exchangeService.ConvertCurrency(exchangeModel));
+        }
     }
 }
